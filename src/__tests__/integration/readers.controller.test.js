@@ -78,7 +78,7 @@ describe("readers.controller", function () {
     });
 
     describe("readReaders - GET /readers", function () {
-      xit("gets all the reader records", async function () {
+      it("gets all the reader records", async function () {
         const res = await req.get("/readers");
 
         expect(res.status).to.equal(200);

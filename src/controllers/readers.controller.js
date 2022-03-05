@@ -1,5 +1,15 @@
 const { Reader } = require("../models");
 
+async function readReaders(req, res) {
+  try {
+    const readers = await Reader.findAll();
+
+    res.status(200).json(readers);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
 async function createReader(req, res) {
   try {
     const reader = await Reader.create(req.body);
@@ -17,5 +27,6 @@ async function createReader(req, res) {
 }
 
 module.exports = {
+  readReaders,
   createReader
 };
