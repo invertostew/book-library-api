@@ -9,4 +9,6 @@ readersRouter
   .get(readersController.readReaders)
   .post(readersController.createReader);
 
+readersRouter.route("/:id").get(readersController.readReader);
+
 module.exports = readersRouter;

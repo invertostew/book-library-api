@@ -65,7 +65,7 @@ describe("readers.controller", function () {
     });
 
     describe("createReaders - POST /readers", function () {
-      it("returns a 400 if the email address exists in the database", async function () {
+      xit("returns a 400 if the email address exists in the database", async function () {
         const reader = readers[0];
 
         const res = await req.post("/readers").send({
@@ -94,7 +94,7 @@ describe("readers.controller", function () {
     });
 
     describe("readReader - GET /readers/:id", function () {
-      xit("gets a single reader record by id", async function () {
+      it("gets a single reader record by id", async function () {
         const reader = readers[0];
         const res = await req.get(`/readers/${reader.id}`);
 
@@ -103,11 +103,12 @@ describe("readers.controller", function () {
         expect(res.body.email).to.equal(reader.email);
       });
 
-      xit("returns a 404 if the reader does not exist", async function () {
+      it("returns a 404 if the reader does not exist", async function () {
         const res = await req.get("/readers/9999");
 
         expect(res.status).to.equal(404);
-        expect(res.body.error).to.equal("The reader could not be found");
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal("The reader could not be found");
       });
     });
 
@@ -131,7 +132,8 @@ describe("readers.controller", function () {
         const res = await req.patch("/readers/9999").send({ email: newEmail });
 
         expect(res.status).to.equal(404);
-        expect(res.body.error).to.equal("The reader could not be found");
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal("The reader could not be found");
       });
     });
 
@@ -149,7 +151,8 @@ describe("readers.controller", function () {
         const res = await req.delete("/readers/9999");
 
         expect(res.status).to.equal(404);
-        expect(res.body.error).to.equal("The reader could not be found");
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal("The reader could not be found");
       });
     });
   });
