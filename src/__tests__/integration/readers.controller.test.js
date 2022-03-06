@@ -1,4 +1,4 @@
-const { describe, it, xit, before, beforeEach } = require("mocha");
+const { describe, it, before, beforeEach } = require("mocha");
 const { expect } = require("chai");
 const supertest = require("supertest");
 
@@ -112,22 +112,6 @@ describe("readers.controller", function () {
       ]);
     });
 
-    describe("createNewReader - POST /readers", function () {
-      xit("returns a 400 if the email address exists in the database", async function () {
-        const [reader] = readers;
-        const newReaderWithUsedEmailAddress = dummyReader({
-          email: reader.email
-        });
-        const res = await req.post("/readers").send({
-          name: newReaderWithUsedEmailAddress.name,
-          email: newReaderWithUsedEmailAddress.email,
-          password: newReaderWithUsedEmailAddress.password
-        });
-
-        expect(res.status).to.equal(400);
-      });
-    });
-
     describe("readAllReaders - GET /readers", function () {
       it("gets all the reader records", async function () {
         const res = await req.get("/readers");
@@ -217,6 +201,28 @@ describe("readers.controller", function () {
         );
         expect(updatedReader.name).to.equal(newName);
         expect(updatedReader.email).to.equal(newEmail);
+      });
+
+      it("returns a 500 if the updated name is empty", async function () {
+        const [reader] = readers;
+        const res = await req.patch(`/readers/${reader.id}`).send({ name: "" });
+
+        expect(res.status).to.equal(500);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "Validation error: Validation notEmpty on name failed"
+        );
+      });
+
+      it("returns a 500 if the updated email is empty", async function () {
+        const [reader] = readers;
+        const res = await req
+          .patch(`/readers/${reader.id}`)
+          .send({ email: "" });
+
+        expect(res.status).to.equal(500);
+        expect(res.body.type).to.equal("error");
+        // expect(res.body.message).to.equal("Validation error: Validation notEmpty on email failed");
       });
 
       it("returns a 404 if the reader does not exist", async function () {
