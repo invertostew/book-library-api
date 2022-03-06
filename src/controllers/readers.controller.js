@@ -1,4 +1,5 @@
 const { Reader } = require("../models");
+const validateEmail = require("../helpers/validate-email");
 const { BadRequest, NotFound } = require("../helpers/general-error");
 
 async function readAllReaders(req, res, next) {
@@ -16,7 +17,17 @@ async function createNewReader(req, res, next) {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      throw new BadRequest("Missing required fields: 'name' or 'email'");
+      throw new BadRequest(
+        "Missing required fields: 'name', 'email' or 'password'"
+      );
+    }
+
+    if (email && !validateEmail(email)) {
+      throw new BadRequest("You have provided an invalid email format");
+    }
+
+    if (password && password.length < 8) {
+      throw new BadRequest("Password length must be greater than 8 characters");
     }
 
     const reader = await Reader.create(req.body);

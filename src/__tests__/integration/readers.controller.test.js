@@ -36,6 +36,10 @@ describe("readers.controller", function () {
         const res = await req.post("/readers").send({});
 
         expect(res.status).to.equal(400);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "Missing required fields: 'name', 'email' or 'password'"
+        );
       });
 
       it("returns a 400 if the request body is missing name", async function () {
@@ -43,6 +47,10 @@ describe("readers.controller", function () {
         const res = await req.post("/readers").send({ email });
 
         expect(res.status).to.equal(400);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "Missing required fields: 'name', 'email' or 'password'"
+        );
       });
 
       it("returns a 400 if the request body is missing email", async function () {
@@ -50,6 +58,10 @@ describe("readers.controller", function () {
         const res = await req.post("/readers").send({ name });
 
         expect(res.status).to.equal(400);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "Missing required fields: 'name', 'email' or 'password'"
+        );
       });
 
       it("returns a 400 if the request body is missing password", async function () {
@@ -57,6 +69,34 @@ describe("readers.controller", function () {
         const res = await req.post("/readers").send({ name, email });
 
         expect(res.status).to.equal(400);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "Missing required fields: 'name', 'email' or 'password'"
+        );
+      });
+
+      it("returns a 400 if the email is an invalid format", async function () {
+        const { name, email, password } = dummyReader({
+          email: "imnotanemail"
+        });
+        const res = await req.post("/readers").send({ name, email, password });
+
+        expect(res.status).to.equal(400);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "You have provided an invalid email format"
+        );
+      });
+
+      it("returns a 400 if the password is less than 8 characters long", async function () {
+        const { name, email, password } = dummyReader({ password: "short" });
+        const res = await req.post("/readers").send({ name, email, password });
+
+        expect(res.status).to.equal(400);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "Password length must be greater than 8 characters"
+        );
       });
     });
   });
