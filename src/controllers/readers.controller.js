@@ -63,9 +63,30 @@ async function updateReader(req, res, next) {
   }
 }
 
+async function deleteReader(req, res, next) {
+  try {
+    const { id } = req.params;
+    const reader = await Reader.findByPk(id);
+
+    if (!reader) {
+      throw new NotFound("The reader could not be found");
+    }
+
+    await Reader.destroy({ where: { id } });
+
+    res.status(204).json({
+      type: "success",
+      message: "The reader has been successfully deleted"
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   readReaders,
   createReader,
   readReader,
-  updateReader
+  updateReader,
+  deleteReader
 };

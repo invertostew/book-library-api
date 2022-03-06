@@ -168,7 +168,7 @@ describe("readers.controller", function () {
     });
 
     describe("deleteReader - DELETE /readers/:id", function () {
-      xit("deletes a single reader record by id", async function () {
+      it("deletes a single reader record by id", async function () {
         const reader = readers[0];
         const res = await req.delete(`/readers/${reader.id}`);
         const deletedReader = await Reader.findByPk(reader.id, { raw: true });
@@ -177,7 +177,7 @@ describe("readers.controller", function () {
         expect(deletedReader).to.equal(null);
       });
 
-      xit("returns a 404 if the reader does not exist", async function () {
+      it("returns a 404 if the reader does not exist", async function () {
         const res = await req.delete("/readers/9999");
 
         expect(res.status).to.equal(404);

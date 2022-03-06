@@ -12,6 +12,7 @@ readersRouter
 readersRouter
   .route("/:id")
   .get(readersController.readReader)
-  .patch(readersController.updateReader);
+  .patch(readersController.updateReader)
+  .delete(readersController.deleteReader);
 
 module.exports = readersRouter;
