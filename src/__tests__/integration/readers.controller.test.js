@@ -113,7 +113,21 @@ describe("readers.controller", function () {
     });
 
     describe("updateReader - PATCH /readers/:id", function () {
-      xit("updates a single reader records email by id", async function () {
+      it("updates a single reader record name by id", async function () {
+        const reader = readers[0];
+        const newName = dummyReader({}).name;
+        const res = await req
+          .patch(`/readers/${reader.id}`)
+          .send({ name: newName });
+        const updatedReader = await Reader.findByPk(reader.id, {
+          raw: true
+        });
+
+        expect(res.status).to.equal(200);
+        expect(updatedReader.name).to.equal(newName);
+      });
+
+      it("updates a single reader record email by id", async function () {
         const reader = readers[0];
         const newEmail = dummyReader({}).email;
         const res = await req
@@ -127,7 +141,23 @@ describe("readers.controller", function () {
         expect(updatedReader.email).to.equal(newEmail);
       });
 
-      xit("returns a 404 if the reader does not exist", async function () {
+      it("updates a single reader record name and email by id", async function () {
+        const reader = readers[0];
+        const newName = dummyReader({}).name;
+        const newEmail = dummyReader({}).email;
+        const res = await req
+          .patch(`/readers/${reader.id}`)
+          .send({ name: newName, email: newEmail });
+        const updatedReader = await Reader.findByPk(reader.id, {
+          raw: true
+        });
+
+        expect(res.status).to.equal(200);
+        expect(updatedReader.name).to.equal(newName);
+        expect(updatedReader.email).to.equal(newEmail);
+      });
+
+      it("returns a 404 if the reader does not exist", async function () {
         const newEmail = dummyReader({}).email;
         const res = await req.patch("/readers/9999").send({ email: newEmail });
 

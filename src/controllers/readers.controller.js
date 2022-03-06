@@ -42,8 +42,30 @@ async function readReader(req, res, next) {
   }
 }
 
+async function updateReader(req, res, next) {
+  try {
+    const { id } = req.params;
+    const reader = await Reader.findByPk(id);
+
+    if (!reader) {
+      throw new NotFound("The reader could not be found");
+    }
+
+    const updatedData = req.body;
+    await Reader.update(updatedData, { where: {} });
+
+    res.status(200).json({
+      type: "success",
+      message: "The reader has been successfully updated"
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   readReaders,
   createReader,
-  readReader
+  readReader,
+  updateReader
 };
