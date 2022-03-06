@@ -1,4 +1,4 @@
-const { describe, it, xit, before, beforeEach } = require("mocha");
+const { describe, it, before, beforeEach } = require("mocha");
 const { expect } = require("chai");
 const supertest = require("supertest");
 
@@ -117,6 +117,10 @@ describe("books.controller", function () {
         });
 
         expect(res.status).to.equal(200);
+        expect(res.body.type).to.equal("success");
+        expect(res.body.message).to.equal(
+          "The book has been successfully updated"
+        );
         expect(updatedBook.title).to.equal(newTitle);
       });
 
@@ -131,6 +135,10 @@ describe("books.controller", function () {
         });
 
         expect(res.status).to.equal(200);
+        expect(res.body.type).to.equal("success");
+        expect(res.body.message).to.equal(
+          "The book has been successfully updated"
+        );
         expect(updatedBook.author).to.equal(newAuthor);
       });
 
@@ -145,6 +153,10 @@ describe("books.controller", function () {
         });
 
         expect(res.status).to.equal(200);
+        expect(res.body.type).to.equal("success");
+        expect(res.body.message).to.equal(
+          "The book has been successfully updated"
+        );
         expect(updatedBook.genre).to.equal(newGenre);
         expect(updatedBook.ISBN).to.equal(newISBN);
       });

@@ -135,6 +135,10 @@ describe("readers.controller", function () {
         });
 
         expect(res.status).to.equal(200);
+        expect(res.body.type).to.equal("success");
+        expect(res.body.message).to.equal(
+          "The reader has been successfully updated"
+        );
         expect(updatedReader.name).to.equal(newName);
       });
 
@@ -149,6 +153,10 @@ describe("readers.controller", function () {
         });
 
         expect(res.status).to.equal(200);
+        expect(res.body.type).to.equal("success");
+        expect(res.body.message).to.equal(
+          "The reader has been successfully updated"
+        );
         expect(updatedReader.email).to.equal(newEmail);
       });
 
@@ -163,6 +171,10 @@ describe("readers.controller", function () {
         });
 
         expect(res.status).to.equal(200);
+        expect(res.body.type).to.equal("success");
+        expect(res.body.message).to.equal(
+          "The reader has been successfully updated"
+        );
         expect(updatedReader.name).to.equal(newName);
         expect(updatedReader.email).to.equal(newEmail);
       });

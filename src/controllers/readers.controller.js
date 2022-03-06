@@ -74,10 +74,7 @@ async function deleteSingleReaderById(req, res, next) {
 
     await Reader.destroy({ where: { id } });
 
-    res.status(204).json({
-      type: "success",
-      message: "The reader has been successfully deleted"
-    });
+    res.sendStatus(204);
   } catch (err) {
     next(err);
   }

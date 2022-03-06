@@ -74,10 +74,7 @@ async function deleteSingleBookById(req, res, next) {
 
     await Book.destroy({ where: { id } });
 
-    res.status(204).json({
-      type: "success",
-      message: "The book has been successfully deleted"
-    });
+    res.sendStatus(204);
   } catch (err) {
     next(err);
   }
