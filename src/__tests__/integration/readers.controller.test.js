@@ -18,7 +18,7 @@ describe("readers.controller", function () {
   });
 
   describe("without records in the database", function () {
-    describe("createReader - POST /readers", function () {
+    describe("createNewReader - POST /readers", function () {
       it("creates a new reader in the database", async function () {
         const reader = dummyReader({});
         const res = await req.post("/readers").send(reader);
@@ -64,7 +64,7 @@ describe("readers.controller", function () {
       ]);
     });
 
-    describe("createReaders - POST /readers", function () {
+    describe("createNewReader - POST /readers", function () {
       xit("returns a 400 if the email address exists in the database", async function () {
         const reader = readers[0];
 
@@ -77,7 +77,7 @@ describe("readers.controller", function () {
       });
     });
 
-    describe("readReaders - GET /readers", function () {
+    describe("readAllReaders - GET /readers", function () {
       it("gets all the reader records", async function () {
         const res = await req.get("/readers");
 
@@ -93,7 +93,7 @@ describe("readers.controller", function () {
       });
     });
 
-    describe("readReader - GET /readers/:id", function () {
+    describe("readSingleReaderById - GET /readers/:id", function () {
       it("gets a single reader record by id", async function () {
         const reader = readers[0];
         const res = await req.get(`/readers/${reader.id}`);
@@ -112,7 +112,7 @@ describe("readers.controller", function () {
       });
     });
 
-    describe("updateReader - PATCH /readers/:id", function () {
+    describe("updateSingleReaderById - PATCH /readers/:id", function () {
       it("updates a single reader record name by id", async function () {
         const reader = readers[0];
         const newName = dummyReader({}).name;
@@ -167,7 +167,7 @@ describe("readers.controller", function () {
       });
     });
 
-    describe("deleteReader - DELETE /readers/:id", function () {
+    describe("deleteSingleReaderById - DELETE /readers/:id", function () {
       it("deletes a single reader record by id", async function () {
         const reader = readers[0];
         const res = await req.delete(`/readers/${reader.id}`);

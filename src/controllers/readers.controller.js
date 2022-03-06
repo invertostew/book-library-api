@@ -1,7 +1,7 @@
 const { Reader } = require("../models");
 const { BadRequest, NotFound } = require("../helpers/general-error");
 
-async function readReaders(req, res, next) {
+async function readAllReaders(req, res, next) {
   try {
     const readers = await Reader.findAll();
 
@@ -11,7 +11,7 @@ async function readReaders(req, res, next) {
   }
 }
 
-async function createReader(req, res, next) {
+async function createNewReader(req, res, next) {
   try {
     const { name, email } = req.body;
 
@@ -27,7 +27,7 @@ async function createReader(req, res, next) {
   }
 }
 
-async function readReader(req, res, next) {
+async function readSingleReaderById(req, res, next) {
   try {
     const { id } = req.params;
     const reader = await Reader.findByPk(id);
@@ -42,7 +42,7 @@ async function readReader(req, res, next) {
   }
 }
 
-async function updateReader(req, res, next) {
+async function updateSingleReaderById(req, res, next) {
   try {
     const { id } = req.params;
     const reader = await Reader.findByPk(id);
@@ -63,7 +63,7 @@ async function updateReader(req, res, next) {
   }
 }
 
-async function deleteReader(req, res, next) {
+async function deleteSingleReaderById(req, res, next) {
   try {
     const { id } = req.params;
     const reader = await Reader.findByPk(id);
@@ -84,9 +84,9 @@ async function deleteReader(req, res, next) {
 }
 
 module.exports = {
-  readReaders,
-  createReader,
-  readReader,
-  updateReader,
-  deleteReader
+  readAllReaders,
+  createNewReader,
+  readSingleReaderById,
+  updateSingleReaderById,
+  deleteSingleReaderById
 };

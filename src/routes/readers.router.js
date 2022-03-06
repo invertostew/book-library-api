@@ -6,13 +6,13 @@ const readersRouter = express.Router();
 
 readersRouter
   .route("/")
-  .get(readersController.readReaders)
-  .post(readersController.createReader);
+  .get(readersController.readAllReaders)
+  .post(readersController.createNewReader);
 
 readersRouter
   .route("/:id")
-  .get(readersController.readReader)
-  .patch(readersController.updateReader)
-  .delete(readersController.deleteReader);
+  .get(readersController.readSingleReaderById)
+  .patch(readersController.updateSingleReaderById)
+  .delete(readersController.deleteSingleReaderById);
 
 module.exports = readersRouter;
