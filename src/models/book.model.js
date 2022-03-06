@@ -2,11 +2,19 @@ function BookModel(connection, DataTypes) {
   const schema = {
     title: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: true,
+        notEmpty: true
+      }
     },
     author: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: true,
+        notEmpty: true
+      }
     },
     genre: {
       type: DataTypes.STRING

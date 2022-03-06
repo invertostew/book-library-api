@@ -37,6 +37,10 @@ describe("books.controller", function () {
         const res = await req.post("/books").send({});
 
         expect(res.status).to.equal(400);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "Missing required fields: 'title' or 'author'"
+        );
       });
 
       it("returns a 400 if the request body is missing title", async function () {
@@ -44,6 +48,10 @@ describe("books.controller", function () {
         const res = await req.post("/books").send({ author });
 
         expect(res.status).to.equal(400);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "Missing required fields: 'title' or 'author'"
+        );
       });
 
       it("returns a 400 if the request body is missing author", async function () {
@@ -51,6 +59,10 @@ describe("books.controller", function () {
         const res = await req.post("/books").send({ title });
 
         expect(res.status).to.equal(400);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "Missing required fields: 'title' or 'author'"
+        );
       });
     });
   });
@@ -159,6 +171,28 @@ describe("books.controller", function () {
         );
         expect(updatedBook.genre).to.equal(newGenre);
         expect(updatedBook.ISBN).to.equal(newISBN);
+      });
+
+      it("returns a 500 if the updated title is empty", async function () {
+        const [book] = books;
+        const res = await req.patch(`/books/${book.id}`).send({ title: "" });
+
+        expect(res.status).to.equal(500);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "Validation error: Validation notEmpty on title failed"
+        );
+      });
+
+      it("returns a 500 if the updated author is empty", async function () {
+        const [book] = books;
+        const res = await req.patch(`/books/${book.id}`).send({ author: "" });
+
+        expect(res.status).to.equal(500);
+        expect(res.body.type).to.equal("error");
+        expect(res.body.message).to.equal(
+          "Validation error: Validation notEmpty on author failed"
+        );
       });
 
       it("returns a 404 if the book does not exist", async function () {
