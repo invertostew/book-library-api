@@ -12,6 +12,21 @@ function dummyReader({
   };
 }
 
+function dummyBook({
+  title = faker.lorem.words(),
+  author = faker.name.findName(),
+  genre = faker.lorem.words(),
+  ISBN = faker.lorem.words()
+}) {
+  return {
+    title,
+    author,
+    genre,
+    ISBN
+  };
+}
+
 module.exports = {
-  dummyReader
+  dummyReader,
+  dummyBook
 };
