@@ -19,7 +19,7 @@ async function createNewBook(req, res, next) {
       throw new BadRequest("Missing required fields: 'title' or 'author'");
     }
 
-    const book = await Book.create(req.body); // will this do anything with random req.body fields?
+    const book = await Book.create(req.body);
 
     res.status(201).json(book);
   } catch (err) {

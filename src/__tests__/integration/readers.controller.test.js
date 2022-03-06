@@ -20,16 +20,16 @@ describe("readers.controller", function () {
   describe("without records in the database", function () {
     describe("createNewReader - POST /readers", function () {
       it("creates a new reader in the database", async function () {
-        const reader = dummyReader({});
-        const res = await req.post("/readers").send(reader);
-        const newReader = await Reader.findByPk(res.body.id, {
+        const readerReqBody = dummyReader({});
+        const res = await req.post("/readers").send(readerReqBody);
+        const reader = await Reader.findByPk(res.body.id, {
           raw: true
         });
 
         expect(res.status).to.equal(201);
-        expect(newReader.name).to.equal(reader.name);
-        expect(newReader.email).to.equal(reader.email);
-        expect(newReader.password).to.equal(reader.password);
+        expect(reader.name).to.equal(readerReqBody.name);
+        expect(reader.email).to.equal(readerReqBody.email);
+        expect(reader.password).to.equal(readerReqBody.password);
       });
 
       it("returns a 400 if the request body is empty", async function () {
@@ -74,7 +74,7 @@ describe("readers.controller", function () {
 
     describe("createNewReader - POST /readers", function () {
       xit("returns a 400 if the email address exists in the database", async function () {
-        const reader = readers[0];
+        const [reader] = readers;
         const newReaderWithUsedEmailAddress = dummyReader({
           email: reader.email
         });
@@ -106,7 +106,7 @@ describe("readers.controller", function () {
 
     describe("readSingleReaderById - GET /readers/:id", function () {
       it("gets a single reader record by id", async function () {
-        const reader = readers[0];
+        const [reader] = readers;
         const res = await req.get(`/readers/${reader.id}`);
 
         expect(res.status).to.equal(200);
@@ -125,7 +125,7 @@ describe("readers.controller", function () {
 
     describe("updateSingleReaderById - PATCH /readers/:id", function () {
       it("updates a single reader record name by id", async function () {
-        const reader = readers[0];
+        const [reader] = readers;
         const { name: newName } = dummyReader({});
         const res = await req
           .patch(`/readers/${reader.id}`)
@@ -139,7 +139,7 @@ describe("readers.controller", function () {
       });
 
       it("updates a single reader record email by id", async function () {
-        const reader = readers[0];
+        const [reader] = readers;
         const { email: newEmail } = dummyReader({});
         const res = await req
           .patch(`/readers/${reader.id}`)
@@ -153,7 +153,7 @@ describe("readers.controller", function () {
       });
 
       it("updates a single reader record name and email by id", async function () {
-        const reader = readers[0];
+        const [reader] = readers;
         const { name: newName, email: newEmail } = dummyReader({});
         const res = await req
           .patch(`/readers/${reader.id}`)
@@ -179,7 +179,7 @@ describe("readers.controller", function () {
 
     describe("deleteSingleReaderById - DELETE /readers/:id", function () {
       it("deletes a single reader record by id", async function () {
-        const reader = readers[0];
+        const [reader] = readers;
         const res = await req.delete(`/readers/${reader.id}`);
         const deletedReader = await Reader.findByPk(reader.id, { raw: true });
 

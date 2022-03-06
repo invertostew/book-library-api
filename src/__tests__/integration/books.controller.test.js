@@ -86,7 +86,7 @@ describe("books.controller", function () {
 
     describe("readSingleBookById - GET /books/:id", function () {
       it("gets a single book record by id", async function () {
-        const book = books[0];
+        const [book] = books;
         const res = await req.get(`/books/${book.id}`);
 
         expect(res.status).to.equal(200);
@@ -107,7 +107,7 @@ describe("books.controller", function () {
 
     describe("updateSingleBookById - PATCH /books/:id", function () {
       it("updates a single book record title by id", async function () {
-        const book = books[0];
+        const [book] = books;
         const { title: newTitle } = dummyBook({});
         const res = await req
           .patch(`/books/${book.id}`)
@@ -121,7 +121,7 @@ describe("books.controller", function () {
       });
 
       it("updates a single book record author by id", async function () {
-        const book = books[0];
+        const [book] = books;
         const { author: newAuthor } = dummyBook({});
         const res = await req
           .patch(`/books/${book.id}`)
@@ -135,7 +135,7 @@ describe("books.controller", function () {
       });
 
       it("updates a single book record genre and ISBN by id", async function () {
-        const book = books[0];
+        const [book] = books;
         const { genre: newGenre, ISBN: newISBN } = dummyBook({});
         const res = await req
           .patch(`/books/${book.id}`)
@@ -161,7 +161,7 @@ describe("books.controller", function () {
 
     describe("deleteSingleBookById - DELETE /books/:id", function () {
       it("deletes a single book record by id", async function () {
-        const book = books[0];
+        const [book] = books;
         const res = await req.delete(`/books/${book.id}`);
         const deletedBook = await Book.findByPk(book.id, { raw: true });
 
