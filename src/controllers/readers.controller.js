@@ -13,9 +13,9 @@ async function readAllReaders(req, res, next) {
 
 async function createNewReader(req, res, next) {
   try {
-    const { name, email } = req.body;
+    const { name, email, password } = req.body;
 
-    if (!name || !email) {
+    if (!name || !email || !password) {
       throw new BadRequest("Missing required fields: 'name' or 'email'");
     }
 

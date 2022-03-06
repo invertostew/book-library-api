@@ -29,6 +29,7 @@ describe("readers.controller", function () {
         expect(res.status).to.equal(201);
         expect(newReader.name).to.equal(reader.name);
         expect(newReader.email).to.equal(reader.email);
+        expect(newReader.password).to.equal(reader.password);
       });
 
       it("returns a 400 if the request body is empty", async function () {
@@ -38,15 +39,22 @@ describe("readers.controller", function () {
       });
 
       it("returns a 400 if the request body is missing name", async function () {
-        const email = dummyReader({}).email;
+        const { email } = dummyReader({});
         const res = await req.post("/readers").send({ email });
 
         expect(res.status).to.equal(400);
       });
 
       it("returns a 400 if the request body is missing email", async function () {
-        const name = dummyReader({}).name;
+        const { name } = dummyReader({});
         const res = await req.post("/readers").send({ name });
+
+        expect(res.status).to.equal(400);
+      });
+
+      it("returns a 400 if the request body is missing password", async function () {
+        const { name, email } = dummyReader({});
+        const res = await req.post("/readers").send({ name, email });
 
         expect(res.status).to.equal(400);
       });
@@ -67,10 +75,13 @@ describe("readers.controller", function () {
     describe("createNewReader - POST /readers", function () {
       xit("returns a 400 if the email address exists in the database", async function () {
         const reader = readers[0];
-
-        const res = await req.post("/readers").send({
-          name: dummyReader({}).name,
+        const newReaderWithUsedEmailAddress = dummyReader({
           email: reader.email
+        });
+        const res = await req.post("/readers").send({
+          name: newReaderWithUsedEmailAddress.name,
+          email: newReaderWithUsedEmailAddress.email,
+          password: newReaderWithUsedEmailAddress.password
         });
 
         expect(res.status).to.equal(400);
@@ -115,7 +126,7 @@ describe("readers.controller", function () {
     describe("updateSingleReaderById - PATCH /readers/:id", function () {
       it("updates a single reader record name by id", async function () {
         const reader = readers[0];
-        const newName = dummyReader({}).name;
+        const { name: newName } = dummyReader({});
         const res = await req
           .patch(`/readers/${reader.id}`)
           .send({ name: newName });
@@ -129,7 +140,7 @@ describe("readers.controller", function () {
 
       it("updates a single reader record email by id", async function () {
         const reader = readers[0];
-        const newEmail = dummyReader({}).email;
+        const { email: newEmail } = dummyReader({});
         const res = await req
           .patch(`/readers/${reader.id}`)
           .send({ email: newEmail });
@@ -143,8 +154,7 @@ describe("readers.controller", function () {
 
       it("updates a single reader record name and email by id", async function () {
         const reader = readers[0];
-        const newName = dummyReader({}).name;
-        const newEmail = dummyReader({}).email;
+        const { name: newName, email: newEmail } = dummyReader({});
         const res = await req
           .patch(`/readers/${reader.id}`)
           .send({ name: newName, email: newEmail });
@@ -158,7 +168,7 @@ describe("readers.controller", function () {
       });
 
       it("returns a 404 if the reader does not exist", async function () {
-        const newEmail = dummyReader({}).email;
+        const { email: newEmail } = dummyReader({});
         const res = await req.patch("/readers/9999").send({ email: newEmail });
 
         expect(res.status).to.equal(404);
