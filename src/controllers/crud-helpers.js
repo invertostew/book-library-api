@@ -74,7 +74,7 @@ async function updateSingleItemById(model, id, body, res, next) {
     }
 
     const updatedData = body;
-    await Model.update(updatedData, { where: {} });
+    await Model.update(updatedData, { where: { id } });
 
     res.status(200).json({
       message: `The ${model} has been successfully updated 👍`
