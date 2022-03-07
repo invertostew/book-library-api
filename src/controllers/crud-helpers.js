@@ -1,6 +1,5 @@
 const { Reader, Book } = require("../models");
-const validateEmail = require("../helpers/validate-email");
-const { BadRequest, NotFound } = require("../helpers/general-error");
+const { NotFound } = require("../helpers/general-error");
 
 function getModel(model) {
   const models = {
@@ -27,34 +26,6 @@ async function createNewItem(model, body, res, next) {
   const Model = getModel(model);
 
   try {
-    if (model === "reader") {
-      const { name, email, password } = body;
-
-      if (!name || !email || !password) {
-        throw new BadRequest(
-          "Missing required fields: 'name', 'email' or 'password' 👎"
-        );
-      }
-
-      if (email && !validateEmail(email)) {
-        throw new BadRequest("You have provided an invalid email format 👎");
-      }
-
-      if (password && password.length < 8) {
-        throw new BadRequest(
-          "Password length must be greater than 8 characters 👎"
-        );
-      }
-    }
-
-    if (model === "book") {
-      const { title, author } = body;
-
-      if (!title || !author) {
-        throw new BadRequest("Missing required fields: 'title' or 'author' 👎");
-      }
-    }
-
     const newItem = await Model.create(body);
 
     res.status(201).json(newItem);
@@ -93,7 +64,6 @@ async function updateSingleItemById(model, id, body, res, next) {
     await Model.update(updatedData, { where: {} });
 
     res.status(200).json({
-      type: "success",
       message: `The ${model} has been successfully updated 👍`
     });
   } catch (err) {

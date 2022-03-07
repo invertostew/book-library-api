@@ -36,32 +36,27 @@ describe("readers.controller", function () {
         const res = await req.post("/readers").send({});
 
         expect(res.status).to.equal(400);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
-          "Missing required fields: 'name', 'email' or 'password' 👎"
-        );
+        expect(res.body.message).to.eql([
+          "Missing required field: 'name' 👎",
+          "Missing required field: 'email' 👎",
+          "Missing required field: 'password' 👎"
+        ]);
       });
 
       it("returns a 400 if the request body is missing name", async function () {
-        const { email } = dummyReader({});
-        const res = await req.post("/readers").send({ email });
+        const { email, password } = dummyReader({});
+        const res = await req.post("/readers").send({ email, password });
 
         expect(res.status).to.equal(400);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
-          "Missing required fields: 'name', 'email' or 'password' 👎"
-        );
+        expect(res.body.message).to.eql(["Missing required field: 'name' 👎"]);
       });
 
       it("returns a 400 if the request body is missing email", async function () {
-        const { name } = dummyReader({});
-        const res = await req.post("/readers").send({ name });
+        const { name, password } = dummyReader({});
+        const res = await req.post("/readers").send({ name, password });
 
         expect(res.status).to.equal(400);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
-          "Missing required fields: 'name', 'email' or 'password' 👎"
-        );
+        expect(res.body.message).to.eql(["Missing required field: 'email' 👎"]);
       });
 
       it("returns a 400 if the request body is missing password", async function () {
@@ -69,10 +64,9 @@ describe("readers.controller", function () {
         const res = await req.post("/readers").send({ name, email });
 
         expect(res.status).to.equal(400);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
-          "Missing required fields: 'name', 'email' or 'password' 👎"
-        );
+        expect(res.body.message).to.eql([
+          "Missing required field: 'password' 👎"
+        ]);
       });
 
       it("returns a 400 if the email is an invalid format", async function () {
@@ -82,10 +76,9 @@ describe("readers.controller", function () {
         const res = await req.post("/readers").send({ name, email, password });
 
         expect(res.status).to.equal(400);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
+        expect(res.body.message).to.eql([
           "You have provided an invalid email format 👎"
-        );
+        ]);
       });
 
       it("returns a 400 if the password is less than 8 characters long", async function () {
@@ -93,10 +86,22 @@ describe("readers.controller", function () {
         const res = await req.post("/readers").send({ name, email, password });
 
         expect(res.status).to.equal(400);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
-          "Password length must be greater than 8 characters 👎"
-        );
+        expect(res.body.message).to.eql([
+          "Password must be more than 8 characters, but less than 64 characters 👎"
+        ]);
+      });
+
+      it("returns a 400 if the password is more than 64 characters long", async function () {
+        const { name, email, password } = dummyReader({
+          password:
+            "ik80oKuAG5ngi6JokwCqExWs9oljjlmS0n26jG1eCHY9KhOdtCNQLPmNKuCtZl00X"
+        });
+        const res = await req.post("/readers").send({ name, email, password });
+
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.eql([
+          "Password must be more than 8 characters, but less than 64 characters 👎"
+        ]);
       });
     });
   });
@@ -142,7 +147,6 @@ describe("readers.controller", function () {
         const res = await req.get("/readers/9999");
 
         expect(res.status).to.equal(404);
-        expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal("The reader could not be found 💥");
       });
     });
@@ -159,7 +163,6 @@ describe("readers.controller", function () {
         });
 
         expect(res.status).to.equal(200);
-        expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
           "The reader has been successfully updated 👍"
         );
@@ -177,7 +180,6 @@ describe("readers.controller", function () {
         });
 
         expect(res.status).to.equal(200);
-        expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
           "The reader has been successfully updated 👍"
         );
@@ -195,7 +197,6 @@ describe("readers.controller", function () {
         });
 
         expect(res.status).to.equal(200);
-        expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
           "The reader has been successfully updated 👍"
         );
@@ -203,26 +204,25 @@ describe("readers.controller", function () {
         expect(updatedReader.email).to.equal(newEmail);
       });
 
-      it("returns a 500 if the updated name is empty", async function () {
+      it("returns a 400 if the updated name is empty", async function () {
         const [reader] = readers;
         const res = await req.patch(`/readers/${reader.id}`).send({ name: "" });
 
-        expect(res.status).to.equal(500);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
-          "Validation error: Validation notEmpty on name failed"
-        );
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.eql(["Missing required field: 'name' 👎"]);
       });
 
-      it("returns a 500 if the updated email is empty", async function () {
+      it("returns a 400 if the updated email is empty", async function () {
         const [reader] = readers;
         const res = await req
           .patch(`/readers/${reader.id}`)
           .send({ email: "" });
 
-        expect(res.status).to.equal(500);
-        expect(res.body.type).to.equal("error");
-        // expect(res.body.message).to.equal("Validation error: Validation notEmpty on email failed");
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.eql([
+          "Missing required field: 'email' 👎",
+          "You have provided an invalid email format 👎"
+        ]);
       });
 
       it("returns a 404 if the reader does not exist", async function () {
@@ -230,7 +230,6 @@ describe("readers.controller", function () {
         const res = await req.patch("/readers/9999").send({ email: newEmail });
 
         expect(res.status).to.equal(404);
-        expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal("The reader could not be found 💥");
       });
     });
@@ -249,7 +248,6 @@ describe("readers.controller", function () {
         const res = await req.delete("/readers/9999");
 
         expect(res.status).to.equal(404);
-        expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal("The reader could not be found 💥");
       });
     });

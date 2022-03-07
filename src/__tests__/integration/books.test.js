@@ -37,10 +37,10 @@ describe("books.controller", function () {
         const res = await req.post("/books").send({});
 
         expect(res.status).to.equal(400);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
-          "Missing required fields: 'title' or 'author' 👎"
-        );
+        expect(res.body.message).to.eql([
+          "Missing required field: 'title' 👎",
+          "Missing required field: 'author' 👎"
+        ]);
       });
 
       it("returns a 400 if the request body is missing title", async function () {
@@ -48,10 +48,7 @@ describe("books.controller", function () {
         const res = await req.post("/books").send({ author });
 
         expect(res.status).to.equal(400);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
-          "Missing required fields: 'title' or 'author' 👎"
-        );
+        expect(res.body.message).to.eql(["Missing required field: 'title' 👎"]);
       });
 
       it("returns a 400 if the request body is missing author", async function () {
@@ -59,10 +56,9 @@ describe("books.controller", function () {
         const res = await req.post("/books").send({ title });
 
         expect(res.status).to.equal(400);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
-          "Missing required fields: 'title' or 'author' 👎"
-        );
+        expect(res.body.message).to.eql([
+          "Missing required field: 'author' 👎"
+        ]);
       });
     });
   });
@@ -112,7 +108,6 @@ describe("books.controller", function () {
         const res = await req.get("/books/9999");
 
         expect(res.status).to.equal(404);
-        expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal("The book could not be found 💥");
       });
     });
@@ -129,7 +124,6 @@ describe("books.controller", function () {
         });
 
         expect(res.status).to.equal(200);
-        expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
           "The book has been successfully updated 👍"
         );
@@ -147,7 +141,6 @@ describe("books.controller", function () {
         });
 
         expect(res.status).to.equal(200);
-        expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
           "The book has been successfully updated 👍"
         );
@@ -165,7 +158,6 @@ describe("books.controller", function () {
         });
 
         expect(res.status).to.equal(200);
-        expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
           "The book has been successfully updated 👍"
         );
@@ -173,26 +165,22 @@ describe("books.controller", function () {
         expect(updatedBook.ISBN).to.equal(newISBN);
       });
 
-      it("returns a 500 if the updated title is empty", async function () {
+      it("returns a 400 if the updated title is empty", async function () {
         const [book] = books;
         const res = await req.patch(`/books/${book.id}`).send({ title: "" });
 
-        expect(res.status).to.equal(500);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
-          "Validation error: Validation notEmpty on title failed"
-        );
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.eql(["Missing required field: 'title' 👎"]);
       });
 
-      it("returns a 500 if the updated author is empty", async function () {
+      it("returns a 400 if the updated author is empty", async function () {
         const [book] = books;
         const res = await req.patch(`/books/${book.id}`).send({ author: "" });
 
-        expect(res.status).to.equal(500);
-        expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal(
-          "Validation error: Validation notEmpty on author failed"
-        );
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.eql([
+          "Missing required field: 'author' 👎"
+        ]);
       });
 
       it("returns a 404 if the book does not exist", async function () {
@@ -200,7 +188,6 @@ describe("books.controller", function () {
         const res = await req.patch("/books/9999").send({ ISBN: newISBN });
 
         expect(res.status).to.equal(404);
-        expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal("The book could not be found 💥");
       });
     });
@@ -219,7 +206,6 @@ describe("books.controller", function () {
         const res = await req.delete("/books/9999");
 
         expect(res.status).to.equal(404);
-        expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal("The book could not be found 💥");
       });
     });
