@@ -32,6 +32,18 @@ describe("readers.controller", function () {
         expect(reader.password).to.equal(readerReqBody.password);
       });
 
+      it("doesn't return the password to the user", async function () {
+        const readerReqBody = dummyReader({});
+        const res = await req.post("/readers").send(readerReqBody);
+        const reader = await Reader.findByPk(res.body.id, {
+          raw: true
+        });
+
+        expect(res.status).to.equal(201);
+        expect(reader.password).to.equal(readerReqBody.password);
+        expect(res.body.password).to.equal(undefined);
+      });
+
       it("returns a 400 if the request body is empty", async function () {
         const res = await req.post("/readers").send({});
 
@@ -118,7 +130,7 @@ describe("readers.controller", function () {
     });
 
     describe("readAllReaders - GET /readers", function () {
-      it("gets all the reader records", async function () {
+      it("gets all the reader records (without the passwords)", async function () {
         const res = await req.get("/readers");
 
         expect(res.status).to.equal(200);
@@ -129,18 +141,20 @@ describe("readers.controller", function () {
 
           expect(reader.name).to.equal(expected.name);
           expect(reader.email).to.equal(expected.email);
+          expect(reader.password).to.equal(undefined);
         });
       });
     });
 
     describe("readSingleReaderById - GET /readers/:id", function () {
-      it("gets a single reader record by id", async function () {
+      it("gets a single reader record by id (without the password)", async function () {
         const [reader] = readers;
         const res = await req.get(`/readers/${reader.id}`);
 
         expect(res.status).to.equal(200);
         expect(res.body.name).to.equal(reader.name);
         expect(res.body.email).to.equal(reader.email);
+        expect(res.body.password).to.equal(undefined);
       });
 
       it("returns a 404 if the reader does not exist", async function () {
