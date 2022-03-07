@@ -39,7 +39,7 @@ describe("books.controller", function () {
         expect(res.status).to.equal(400);
         expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal(
-          "Missing required fields: 'title' or 'author'"
+          "Missing required fields: 'title' or 'author' 👎"
         );
       });
 
@@ -50,7 +50,7 @@ describe("books.controller", function () {
         expect(res.status).to.equal(400);
         expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal(
-          "Missing required fields: 'title' or 'author'"
+          "Missing required fields: 'title' or 'author' 👎"
         );
       });
 
@@ -61,7 +61,7 @@ describe("books.controller", function () {
         expect(res.status).to.equal(400);
         expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal(
-          "Missing required fields: 'title' or 'author'"
+          "Missing required fields: 'title' or 'author' 👎"
         );
       });
     });
@@ -113,7 +113,7 @@ describe("books.controller", function () {
 
         expect(res.status).to.equal(404);
         expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal("The book could not be found");
+        expect(res.body.message).to.equal("The book could not be found 💥");
       });
     });
 
@@ -131,7 +131,7 @@ describe("books.controller", function () {
         expect(res.status).to.equal(200);
         expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
-          "The book has been successfully updated"
+          "The book has been successfully updated 👍"
         );
         expect(updatedBook.title).to.equal(newTitle);
       });
@@ -149,7 +149,7 @@ describe("books.controller", function () {
         expect(res.status).to.equal(200);
         expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
-          "The book has been successfully updated"
+          "The book has been successfully updated 👍"
         );
         expect(updatedBook.author).to.equal(newAuthor);
       });
@@ -167,7 +167,7 @@ describe("books.controller", function () {
         expect(res.status).to.equal(200);
         expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
-          "The book has been successfully updated"
+          "The book has been successfully updated 👍"
         );
         expect(updatedBook.genre).to.equal(newGenre);
         expect(updatedBook.ISBN).to.equal(newISBN);
@@ -201,7 +201,7 @@ describe("books.controller", function () {
 
         expect(res.status).to.equal(404);
         expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal("The book could not be found");
+        expect(res.body.message).to.equal("The book could not be found 💥");
       });
     });
 
@@ -220,7 +220,7 @@ describe("books.controller", function () {
 
         expect(res.status).to.equal(404);
         expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal("The book could not be found");
+        expect(res.body.message).to.equal("The book could not be found 💥");
       });
     });
   });

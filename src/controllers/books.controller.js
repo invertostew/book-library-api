@@ -1,83 +1,23 @@
-const { Book } = require("../models");
-const { BadRequest, NotFound } = require("../helpers/general-error");
+const crudHelpers = require("./crud-helpers");
 
-async function readAllBooks(req, res, next) {
-  try {
-    const books = await Book.findAll();
-
-    res.status(200).json(books);
-  } catch (err) {
-    next(err);
-  }
+function readAllBooks(req, res, next) {
+  crudHelpers.readAllItems("book", res, next);
 }
 
-async function createNewBook(req, res, next) {
-  try {
-    const { title, author } = req.body;
-
-    if (!title || !author) {
-      throw new BadRequest("Missing required fields: 'title' or 'author'");
-    }
-
-    const book = await Book.create(req.body);
-
-    res.status(201).json(book);
-  } catch (err) {
-    next(err);
-  }
+function createNewBook(req, res, next) {
+  crudHelpers.createNewItem("book", req.body, res, next);
 }
 
-async function readSingleBookById(req, res, next) {
-  try {
-    const { id } = req.params;
-    const book = await Book.findByPk(id);
-
-    if (!book) {
-      throw new NotFound("The book could not be found");
-    }
-
-    res.status(200).json(book);
-  } catch (err) {
-    next(err);
-  }
+function readSingleBookById(req, res, next) {
+  crudHelpers.readSingleItemById("book", req.params.id, res, next);
 }
 
-async function updateSingleBookById(req, res, next) {
-  try {
-    const { id } = req.params;
-    const book = await Book.findByPk(id);
-
-    if (!book) {
-      throw new NotFound("The book could not be found");
-    }
-
-    const updatedData = req.body;
-    await Book.update(updatedData, { where: {} });
-
-    res.status(200).json({
-      type: "success",
-      message: "The book has been successfully updated"
-    });
-  } catch (err) {
-    next(err);
-  }
+function updateSingleBookById(req, res, next) {
+  crudHelpers.updateSingleItemById("book", req.params.id, req.body, res, next);
 }
 
-async function deleteSingleBookById(req, res, next) {
-  try {
-    const { id } = req.params;
-    const book = await Book.findByPk(id);
-
-    if (!book) {
-      throw new NotFound("The book could not be found");
-    }
-
-    await Book.destroy({ where: { id } });
-
-    res.sendStatus(204);
-  } catch (err) {
-    next(err);
-  }
+function deleteSingleBookById(req, res, next) {
+  crudHelpers.deleteSingleItemById("book", req.params.id, res, next);
 }
 
 module.exports = {

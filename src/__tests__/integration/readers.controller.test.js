@@ -38,7 +38,7 @@ describe("readers.controller", function () {
         expect(res.status).to.equal(400);
         expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal(
-          "Missing required fields: 'name', 'email' or 'password'"
+          "Missing required fields: 'name', 'email' or 'password' 👎"
         );
       });
 
@@ -49,7 +49,7 @@ describe("readers.controller", function () {
         expect(res.status).to.equal(400);
         expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal(
-          "Missing required fields: 'name', 'email' or 'password'"
+          "Missing required fields: 'name', 'email' or 'password' 👎"
         );
       });
 
@@ -60,7 +60,7 @@ describe("readers.controller", function () {
         expect(res.status).to.equal(400);
         expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal(
-          "Missing required fields: 'name', 'email' or 'password'"
+          "Missing required fields: 'name', 'email' or 'password' 👎"
         );
       });
 
@@ -71,7 +71,7 @@ describe("readers.controller", function () {
         expect(res.status).to.equal(400);
         expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal(
-          "Missing required fields: 'name', 'email' or 'password'"
+          "Missing required fields: 'name', 'email' or 'password' 👎"
         );
       });
 
@@ -84,7 +84,7 @@ describe("readers.controller", function () {
         expect(res.status).to.equal(400);
         expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal(
-          "You have provided an invalid email format"
+          "You have provided an invalid email format 👎"
         );
       });
 
@@ -95,7 +95,7 @@ describe("readers.controller", function () {
         expect(res.status).to.equal(400);
         expect(res.body.type).to.equal("error");
         expect(res.body.message).to.equal(
-          "Password length must be greater than 8 characters"
+          "Password length must be greater than 8 characters 👎"
         );
       });
     });
@@ -143,7 +143,7 @@ describe("readers.controller", function () {
 
         expect(res.status).to.equal(404);
         expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal("The reader could not be found");
+        expect(res.body.message).to.equal("The reader could not be found 💥");
       });
     });
 
@@ -161,7 +161,7 @@ describe("readers.controller", function () {
         expect(res.status).to.equal(200);
         expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
-          "The reader has been successfully updated"
+          "The reader has been successfully updated 👍"
         );
         expect(updatedReader.name).to.equal(newName);
       });
@@ -179,7 +179,7 @@ describe("readers.controller", function () {
         expect(res.status).to.equal(200);
         expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
-          "The reader has been successfully updated"
+          "The reader has been successfully updated 👍"
         );
         expect(updatedReader.email).to.equal(newEmail);
       });
@@ -197,7 +197,7 @@ describe("readers.controller", function () {
         expect(res.status).to.equal(200);
         expect(res.body.type).to.equal("success");
         expect(res.body.message).to.equal(
-          "The reader has been successfully updated"
+          "The reader has been successfully updated 👍"
         );
         expect(updatedReader.name).to.equal(newName);
         expect(updatedReader.email).to.equal(newEmail);
@@ -231,7 +231,7 @@ describe("readers.controller", function () {
 
         expect(res.status).to.equal(404);
         expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal("The reader could not be found");
+        expect(res.body.message).to.equal("The reader could not be found 💥");
       });
     });
 
@@ -250,7 +250,7 @@ describe("readers.controller", function () {
 
         expect(res.status).to.equal(404);
         expect(res.body.type).to.equal("error");
-        expect(res.body.message).to.equal("The reader could not be found");
+        expect(res.body.message).to.equal("The reader could not be found 💥");
       });
     });
   });
