@@ -5,11 +5,11 @@ function AuthorModel(connection, DataTypes) {
   const schema = {
     author: {
       type: DataTypes.STRING,
+      allowNull: false,
       unique: {
         args: true,
         msg: ERROR_UNIQUE_AUTHOR
       },
-      allowNull: false,
       validate: {
         notNull: {
           args: true,

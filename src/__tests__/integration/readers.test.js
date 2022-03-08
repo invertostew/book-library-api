@@ -115,6 +115,17 @@ describe("readers.controller", function () {
           "Password must be more than 8 characters, but less than 64 characters 👎"
         ]);
       });
+
+      it("returns a 400 if the email is not unique", async function () {
+        const readerReqBody = dummyReader({});
+        await req.post("/readers").send(readerReqBody);
+        const res = await req.post("/readers").send(readerReqBody);
+
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.eql([
+          "The 'email' field must be unique 👎"
+        ]);
+      });
     });
   });
 
@@ -245,6 +256,18 @@ describe("readers.controller", function () {
 
         expect(res.status).to.equal(404);
         expect(res.body.message).to.equal("The reader could not be found 💥");
+      });
+
+      it("returns a 400 if the updated email already exists", async function () {
+        const [readers1, readers2] = readers;
+        const res = await req
+          .patch(`/readers/${readers1.id}`)
+          .send({ email: readers2.email });
+
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.eql([
+          "The 'email' field must be unique 👎"
+        ]);
       });
     });
 

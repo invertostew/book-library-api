@@ -1,8 +1,9 @@
 function ReaderModel(connection, DataTypes) {
   const ERROR_MISSING_NAME = "Missing required field: 'name' 👎";
+  const ERROR_UNIQUE_EMAIL = "The 'email' field must be unique 👎";
   const ERROR_MISSING_EMAIL = "Missing required field: 'email' 👎";
-  const ERROR_MISSING_PASSWORD = "Missing required field: 'password' 👎";
   const ERROR_INVALID_EMAIL = "You have provided an invalid email format 👎";
+  const ERROR_MISSING_PASSWORD = "Missing required field: 'password' 👎";
   const ERROR_PASSWORD_LENGTH =
     "Password must be more than 8 characters, but less than 64 characters 👎";
 
@@ -24,6 +25,10 @@ function ReaderModel(connection, DataTypes) {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        args: true,
+        msg: ERROR_UNIQUE_EMAIL
+      },
       validate: {
         notNull: {
           args: true,
