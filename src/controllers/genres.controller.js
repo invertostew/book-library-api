@@ -1,7 +1,7 @@
 const crudHelpers = require("./crud-helpers");
 
 function readAllGenres(req, res, next) {
-  crudHelpers.readAllItems("genre", res, next);
+  crudHelpers.readAllItems("genre", res, next, "book");
 }
 
 function createNewGenre(req, res, next) {

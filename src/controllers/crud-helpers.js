@@ -13,11 +13,13 @@ function getModel(model) {
   return models[model];
 }
 
-async function readAllItems(model, res, next) {
+async function readAllItems(model, res, next, includedModel) {
   const Model = getModel(model);
 
   try {
-    const items = await Model.findAll();
+    const items = includedModel
+      ? await Model.findAll({ include: getModel(includedModel) })
+      : await Model.findAll();
     const itemsWithoutPassword = items.map((item) => {
       return removeObjectProperty("password", item.dataValues);
     });
@@ -44,11 +46,13 @@ async function createNewItem(model, body, res, next) {
   }
 }
 
-async function readSingleItemById(model, id, res, next) {
+async function readSingleItemById(model, id, res, next, includedModel) {
   const Model = getModel(model);
 
   try {
-    const item = await Model.findByPk(id);
+    const item = includedModel
+      ? await Model.findByPk(id, { include: getModel(includedModel) })
+      : await Model.findByPk(id);
 
     if (!item) {
       throw new NotFound(`The ${model} could not be found 💥`);

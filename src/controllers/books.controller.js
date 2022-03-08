@@ -9,7 +9,7 @@ function createNewBook(req, res, next) {
 }
 
 function readSingleBookById(req, res, next) {
-  crudHelpers.readSingleItemById("book", req.params.id, res, next);
+  crudHelpers.readSingleItemById("book", req.params.id, res, next, "genre");
 }
 
 function updateSingleBookById(req, res, next) {
