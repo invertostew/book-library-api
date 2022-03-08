@@ -1,6 +1,7 @@
 function BookModel(connection, DataTypes) {
   const ERROR_MISSING_TITLE = "Missing required field: 'title' 👎";
-  const ERROR_MISSING_AUTHOR = "Missing required field: 'author' 👎";
+  const ERROR_ISBN_LENGTH =
+    "ISBN must be more than or equal to 10 characters, but less than or equal to 13 characters 👎";
 
   const schema = {
     title: {
@@ -17,25 +18,14 @@ function BookModel(connection, DataTypes) {
         }
       }
     },
-    author: {
+    ISBN: {
       type: DataTypes.STRING,
-      allowNull: false,
       validate: {
-        notNull: {
-          args: true,
-          msg: ERROR_MISSING_AUTHOR
-        },
-        notEmpty: {
-          args: true,
-          msg: ERROR_MISSING_AUTHOR
+        len: {
+          args: [10, 13],
+          msg: ERROR_ISBN_LENGTH
         }
       }
-    },
-    genre: {
-      type: DataTypes.STRING
-    },
-    ISBN: {
-      type: DataTypes.STRING
     }
   };
 

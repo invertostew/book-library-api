@@ -28,8 +28,6 @@ describe("books.controller", function () {
 
         expect(res.status).to.equal(201);
         expect(book.title).to.equal(bookReqBody.title);
-        expect(book.author).to.equal(bookReqBody.author);
-        expect(book.genre).to.equal(bookReqBody.genre);
         expect(book.ISBN).to.equal(bookReqBody.ISBN);
       });
 
@@ -37,27 +35,34 @@ describe("books.controller", function () {
         const res = await req.post("/books").send({});
 
         expect(res.status).to.equal(400);
-        expect(res.body.message).to.eql([
-          "Missing required field: 'title' 👎",
-          "Missing required field: 'author' 👎"
-        ]);
+        expect(res.body.message).to.eql(["Missing required field: 'title' 👎"]);
       });
 
       it("returns a 400 if the request body is missing title", async function () {
-        const { author } = dummyBook({});
-        const res = await req.post("/books").send({ author });
+        const { ISBN } = dummyBook({});
+        const res = await req.post("/books").send({ ISBN });
 
         expect(res.status).to.equal(400);
         expect(res.body.message).to.eql(["Missing required field: 'title' 👎"]);
       });
 
-      it("returns a 400 if the request body is missing author", async function () {
-        const { title } = dummyBook({});
-        const res = await req.post("/books").send({ title });
+      it("returns a 400 if the ISBN is less than 10 characters", async function () {
+        const book = dummyBook({ ISBN: "short" });
+        const res = await req.post("/books").send(book);
 
         expect(res.status).to.equal(400);
         expect(res.body.message).to.eql([
-          "Missing required field: 'author' 👎"
+          "ISBN must be more than or equal to 10 characters, but less than or equal to 13 characters 👎"
+        ]);
+      });
+
+      it("returns a 400 if the ISBN is more than 13 characters", async function () {
+        const book = dummyBook({ ISBN: "iammorethan13characters" });
+        const res = await req.post("/books").send(book);
+
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.eql([
+          "ISBN must be more than or equal to 10 characters, but less than or equal to 13 characters 👎"
         ]);
       });
     });
@@ -68,9 +73,9 @@ describe("books.controller", function () {
 
     beforeEach(async function () {
       books = await Promise.all([
-        Book.create(dummyBook({})),
-        Book.create(dummyBook({})),
-        Book.create(dummyBook({}))
+        Book.create(dummyBook({ readerId: 1, genreId: 1 })),
+        Book.create(dummyBook({ readerId: 2, genreId: 2 })),
+        Book.create(dummyBook({ readerId: 3, genreId: 3 }))
       ]);
     });
 
@@ -85,8 +90,6 @@ describe("books.controller", function () {
           const expected = books.find((a) => a.id === book.id);
 
           expect(book.title).to.equal(expected.title);
-          expect(book.author).to.equal(expected.author);
-          expect(book.genre).to.equal(expected.genre);
           expect(book.ISBN).to.equal(expected.ISBN);
         });
       });
@@ -99,8 +102,6 @@ describe("books.controller", function () {
 
         expect(res.status).to.equal(200);
         expect(res.body.title).to.equal(book.title);
-        expect(res.body.author).to.equal(book.author);
-        expect(res.body.genre).to.equal(book.genre);
         expect(res.body.ISBN).to.equal(book.ISBN);
       });
 
@@ -130,12 +131,12 @@ describe("books.controller", function () {
         expect(updatedBook.title).to.equal(newTitle);
       });
 
-      it("updates a single book record author by id", async function () {
+      it("updates a single book record ISBN by id", async function () {
         const [book] = books;
-        const { author: newAuthor } = dummyBook({});
+        const { ISBN: newISBN } = dummyBook({});
         const res = await req
           .patch(`/books/${book.id}`)
-          .send({ author: newAuthor });
+          .send({ ISBN: newISBN });
         const updatedBook = await Book.findByPk(book.id, {
           raw: true
         });
@@ -144,24 +145,6 @@ describe("books.controller", function () {
         expect(res.body.message).to.equal(
           "The book has been successfully updated 👍"
         );
-        expect(updatedBook.author).to.equal(newAuthor);
-      });
-
-      it("updates a single book record genre and ISBN by id", async function () {
-        const [book] = books;
-        const { genre: newGenre, ISBN: newISBN } = dummyBook({});
-        const res = await req
-          .patch(`/books/${book.id}`)
-          .send({ genre: newGenre, ISBN: newISBN });
-        const updatedBook = await Book.findByPk(book.id, {
-          raw: true
-        });
-
-        expect(res.status).to.equal(200);
-        expect(res.body.message).to.equal(
-          "The book has been successfully updated 👍"
-        );
-        expect(updatedBook.genre).to.equal(newGenre);
         expect(updatedBook.ISBN).to.equal(newISBN);
       });
 
@@ -171,16 +154,6 @@ describe("books.controller", function () {
 
         expect(res.status).to.equal(400);
         expect(res.body.message).to.eql(["Missing required field: 'title' 👎"]);
-      });
-
-      it("returns a 400 if the updated author is empty", async function () {
-        const [book] = books;
-        const res = await req.patch(`/books/${book.id}`).send({ author: "" });
-
-        expect(res.status).to.equal(400);
-        expect(res.body.message).to.eql([
-          "Missing required field: 'author' 👎"
-        ]);
       });
 
       it("returns a 404 if the book does not exist", async function () {
