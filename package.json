@@ -2,7 +2,17 @@
   "name": "book-library-api",
   "version": "1.0.0",
   "description": "Manchester Codes Backend Module - Book Library API",
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/invertostew/book-library-api/issues"
+  },
+  "license": "ISC",
+  "author": "Stuart Green",
   "main": "./src/server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/invertostew/book-library-api"
+  },
   "scripts": {
     "lint": "eslint --config .eslintrc --ext .js './src/**/*.js'",
     "lint:fix": "eslint --config .eslintrc --ext .js --fix './src/**/*.js'",
@@ -15,9 +25,6 @@
     "test": "mocha ./src/__tests__/**/*.js --exit --recursive --timeout 60000 --file ./src/__tests__/test-setup.js",
     "posttest": "node ./src/scripts/drop-database.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "express": "^4.17.3",
     "helmet": "^5.0.2",
