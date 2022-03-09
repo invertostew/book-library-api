@@ -233,3 +233,6 @@ All tests are located inside of the `./src/__tests__` directory.
 If you wish to run the tests for yourself, you can install Faker, Mocha, Chai and SuperTest by running `npm install` and from there you can run the tests by running `npm test`.
 
 I also used [Insomnia](https://insomnia.rest/) to send requests to my RESTful API endpoints as documented above.
+
+![Insomnia API Testing](./src/__tests__/__screenshots__/endpoint-testing.png)
+![Passing Tests](./src/__tests__/__screenshots__/passing-tests.png)
