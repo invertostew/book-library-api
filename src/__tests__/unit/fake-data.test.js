@@ -26,37 +26,6 @@ describe("faker dummy data", function () {
     });
   });
 
-  describe("dummyBook", function () {
-    it("has default properties", function () {
-      const dummyBook = fakeData.dummyBook({});
-
-      expect(dummyBook.title).to.not.equal(undefined);
-      expect(dummyBook.ISBN).to.not.equal(undefined);
-      expect(dummyBook.ReaderId).to.equal(null);
-      expect(dummyBook.GenreId).to.equal(null);
-    });
-
-    it("has default properties that can be overriden", function () {
-      const dummyBook = fakeData.dummyBook({
-        title: "Nineteen Eighty-Four",
-        ISBN: "9780141393049"
-      });
-
-      expect(dummyBook.title).to.equal("Nineteen Eighty-Four");
-      expect(dummyBook.ISBN).to.equal("9780141393049");
-    });
-
-    it("has optional ReaderId and GenreId properties", function () {
-      const dummyBook = fakeData.dummyBook({
-        ReaderId: 1,
-        GenreId: 2
-      });
-
-      expect(dummyBook.ReaderId).to.equal(1);
-      expect(dummyBook.GenreId).to.equal(2);
-    });
-  });
-
   describe("dummyAuthor", function () {
     it("has default properties", function () {
       const dummyAuthor = fakeData.dummyAuthor({});
@@ -86,6 +55,37 @@ describe("faker dummy data", function () {
       });
 
       expect(dummyGenre.genre).to.equal("Science Fiction");
+    });
+  });
+
+  describe("dummyBook", function () {
+    it("has default properties", function () {
+      const dummyBook = fakeData.dummyBook({});
+
+      expect(dummyBook.title).to.not.equal(undefined);
+      expect(dummyBook.ISBN).to.not.equal(undefined);
+      expect(dummyBook.ReaderId).to.equal(null);
+      expect(dummyBook.GenreId).to.equal(null);
+    });
+
+    it("has default properties that can be overriden", function () {
+      const dummyBook = fakeData.dummyBook({
+        title: "Nineteen Eighty-Four",
+        ISBN: "9780141393049"
+      });
+
+      expect(dummyBook.title).to.equal("Nineteen Eighty-Four");
+      expect(dummyBook.ISBN).to.equal("9780141393049");
+    });
+
+    it("has optional ReaderId and GenreId properties", function () {
+      const dummyBook = fakeData.dummyBook({
+        ReaderId: 1,
+        GenreId: 2
+      });
+
+      expect(dummyBook.ReaderId).to.equal(1);
+      expect(dummyBook.GenreId).to.equal(2);
     });
   });
 });

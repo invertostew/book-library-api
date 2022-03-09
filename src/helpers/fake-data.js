@@ -12,6 +12,20 @@ function dummyReader({
   };
 }
 
+function dummyAuthor({ author = faker.name.findName(), Books = [] }) {
+  return {
+    author,
+    Books
+  };
+}
+
+function dummyGenre({ genre = faker.lorem.words(2), Books = [] }) {
+  return {
+    genre,
+    Books
+  };
+}
+
 function dummyBook({
   title = faker.lorem.words(),
   ISBN = faker.lorem.word(13),
@@ -28,23 +42,9 @@ function dummyBook({
   };
 }
 
-function dummyAuthor({ author = faker.name.findName(), Books = [] }) {
-  return {
-    author,
-    Books
-  };
-}
-
-function dummyGenre({ genre = faker.lorem.words(2), Books = [] }) {
-  return {
-    genre,
-    Books
-  };
-}
-
 module.exports = {
   dummyReader,
-  dummyBook,
   dummyAuthor,
-  dummyGenre
+  dummyGenre,
+  dummyBook
 };
