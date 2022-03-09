@@ -73,9 +73,9 @@ describe("books.controller", function () {
 
     beforeEach(async function () {
       books = await Promise.all([
-        Book.create(dummyBook({ readerId: 1, genreId: 1 })),
-        Book.create(dummyBook({ readerId: 2, genreId: 2 })),
-        Book.create(dummyBook({ readerId: 3, genreId: 3 }))
+        Book.create(dummyBook({})),
+        Book.create(dummyBook({})),
+        Book.create(dummyBook({}))
       ]);
     });
 
@@ -103,6 +103,8 @@ describe("books.controller", function () {
         expect(res.status).to.equal(200);
         expect(res.body.title).to.equal(book.title);
         expect(res.body.ISBN).to.equal(book.ISBN);
+        expect(res.body.ReaderId).to.equal(null);
+        expect(res.body.GenreId).to.equal(null);
       });
 
       it("returns a 404 if the book does not exist", async function () {

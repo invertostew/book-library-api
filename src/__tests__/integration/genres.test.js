@@ -80,6 +80,7 @@ describe("genres.controller", function () {
           const expected = genres.find((g) => g.id === genre.id);
 
           expect(genre.genre).to.equal(expected.genre);
+          expect(genre.Books).to.eql([]);
         });
       });
     });

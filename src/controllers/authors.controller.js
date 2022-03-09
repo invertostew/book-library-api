@@ -1,7 +1,7 @@
 const crudHelpers = require("./crud-helpers");
 
 function readAllAuthors(req, res, next) {
-  crudHelpers.readAllItems("author", res, next);
+  crudHelpers.readAllItems("author", res, next, "book");
 }
 
 function createNewAuthor(req, res, next) {

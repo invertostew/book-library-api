@@ -32,8 +32,8 @@ describe("faker dummy data", function () {
 
       expect(dummyBook.title).to.not.equal(undefined);
       expect(dummyBook.ISBN).to.not.equal(undefined);
-      expect(dummyBook.readerId).to.equal(undefined);
-      expect(dummyBook.genreId).to.equal(undefined);
+      expect(dummyBook.ReaderId).to.equal(null);
+      expect(dummyBook.GenreId).to.equal(null);
     });
 
     it("has default properties that can be overriden", function () {
@@ -46,14 +46,14 @@ describe("faker dummy data", function () {
       expect(dummyBook.ISBN).to.equal("9780141393049");
     });
 
-    it("has optional readerId and genreId properties", function () {
+    it("has optional ReaderId and GenreId properties", function () {
       const dummyBook = fakeData.dummyBook({
-        readerId: 1,
-        genreId: 2
+        ReaderId: 1,
+        GenreId: 2
       });
 
-      expect(dummyBook.readerId).to.equal(1);
-      expect(dummyBook.genreId).to.equal(2);
+      expect(dummyBook.ReaderId).to.equal(1);
+      expect(dummyBook.GenreId).to.equal(2);
     });
   });
 

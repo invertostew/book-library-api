@@ -15,23 +15,31 @@ function dummyReader({
 function dummyBook({
   title = faker.lorem.words(),
   ISBN = faker.lorem.word(13),
-  readerId,
-  genreId
+  ReaderId = null,
+  AuthorId = null,
+  GenreId = null
 }) {
   return {
     title,
     ISBN,
-    readerId,
-    genreId
+    ReaderId,
+    AuthorId,
+    GenreId
   };
 }
 
-function dummyAuthor({ author = faker.name.findName() }) {
-  return { author };
+function dummyAuthor({ author = faker.name.findName(), Books = [] }) {
+  return {
+    author,
+    Books
+  };
 }
 
-function dummyGenre({ genre = faker.lorem.words(2) }) {
-  return { genre };
+function dummyGenre({ genre = faker.lorem.words(2), Books = [] }) {
+  return {
+    genre,
+    Books
+  };
 }
 
 module.exports = {

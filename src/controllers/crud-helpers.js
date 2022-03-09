@@ -1,13 +1,13 @@
-const { Reader, Book, Author, Genre } = require("../models");
+const { Reader, Author, Genre, Book } = require("../models");
 const removeObjectProperty = require("../helpers/remove-object-property");
 const { NotFound } = require("../helpers/general-error");
 
 function getModel(model) {
   const models = {
     reader: Reader,
-    book: Book,
     author: Author,
-    genre: Genre
+    genre: Genre,
+    book: Book
   };
 
   return models[model];
