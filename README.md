@@ -97,7 +97,7 @@ The main purpose of this project is to:
 
 #### Example Request Body
 
-```json
+```javascript
 // Endpoint: POST /readers
 {
     "name": "First Last",
@@ -135,7 +135,7 @@ The main purpose of this project is to:
 
 #### Example Request Body
 
-```json
+```javascript
 // Endpoint: POST /authors
 {
     "author": "First Last"
@@ -165,7 +165,7 @@ The main purpose of this project is to:
 
 #### Example Request Body
 
-```json
+```javascript
 // Endpoint: POST /genres
 {
     "genre": "Sci-Fy"
