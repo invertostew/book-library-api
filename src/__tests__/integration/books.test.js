@@ -2,25 +2,31 @@ const { describe, it, before, beforeEach } = require("mocha");
 const { expect } = require("chai");
 const supertest = require("supertest");
 
-const { Book } = require("../../models/index");
-const { dummyBook } = require("../../helpers/fake-data");
+const { Book, Author } = require("../../models/index");
+const { dummyBook, dummyAuthor } = require("../../helpers/fake-data");
 const app = require("../../app");
 
 const req = supertest(app);
 
 describe("books.controller", function () {
   before(async function () {
-    await Book.sequelize.sync();
+    await Promise.all([Book.sequelize.sync(), Author.sequelize.sync()]);
   });
+
+  let author;
 
   beforeEach(async function () {
     await Book.destroy({ where: {} });
+    await Author.destroy({ where: {} });
+
+    // Book MUST have an Author (for AuthorId), so set one up.
+    author = await Author.create(dummyAuthor({}));
   });
 
   describe("without records in the database", function () {
     describe("createNewBook - POST /books", function () {
       it("creates a new book in the database", async function () {
-        const bookReqBody = dummyBook({});
+        const bookReqBody = dummyBook({ AuthorId: author.id });
         const res = await req.post("/books").send(bookReqBody);
         const book = await Book.findByPk(res.body.id, {
           raw: true
@@ -35,19 +41,22 @@ describe("books.controller", function () {
         const res = await req.post("/books").send({});
 
         expect(res.status).to.equal(400);
-        expect(res.body.message).to.eql(["Missing required field: 'title' 👎"]);
+        expect(res.body.message).to.eql([
+          "Missing required field: 'title' 👎",
+          "Missing required field: 'AuthorId' 👎"
+        ]);
       });
 
       it("returns a 400 if the request body is missing title", async function () {
-        const { ISBN } = dummyBook({});
-        const res = await req.post("/books").send({ ISBN });
+        const { ISBN, AuthorId } = dummyBook({ AuthorId: author.id });
+        const res = await req.post("/books").send({ ISBN, AuthorId });
 
         expect(res.status).to.equal(400);
         expect(res.body.message).to.eql(["Missing required field: 'title' 👎"]);
       });
 
       it("returns a 400 if the ISBN is less than 10 characters", async function () {
-        const book = dummyBook({ ISBN: "short" });
+        const book = dummyBook({ ISBN: "short", AuthorId: author.id });
         const res = await req.post("/books").send(book);
 
         expect(res.status).to.equal(400);
@@ -57,13 +66,25 @@ describe("books.controller", function () {
       });
 
       it("returns a 400 if the ISBN is more than 13 characters", async function () {
-        const book = dummyBook({ ISBN: "iammorethan13characters" });
+        const book = dummyBook({
+          ISBN: "iammorethan13characters",
+          AuthorId: author.id
+        });
         const res = await req.post("/books").send(book);
 
         expect(res.status).to.equal(400);
         expect(res.body.message).to.eql([
           "ISBN must be more than or equal to 10 characters, but less than or equal to 13 characters 👎"
         ]);
+      });
+
+      it("returns a 400 if the ISBN is not unique", async function () {
+        const bookReqBody = dummyBook({ AuthorId: author.id });
+        await req.post("/books").send(bookReqBody);
+        const res = await req.post("/books").send(bookReqBody);
+
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.eql(["The 'ISBN' field must be unique 👎"]);
       });
     });
   });
@@ -73,9 +94,9 @@ describe("books.controller", function () {
 
     beforeEach(async function () {
       books = await Promise.all([
-        Book.create(dummyBook({})),
-        Book.create(dummyBook({})),
-        Book.create(dummyBook({}))
+        Book.create(dummyBook({ ISBN: "1234567890", AuthorId: author.id })),
+        Book.create(dummyBook({ ISBN: "12345678901", AuthorId: author.id })),
+        Book.create(dummyBook({ ISBN: "12345678902", AuthorId: author.id }))
       ]);
     });
 

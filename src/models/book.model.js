@@ -1,5 +1,6 @@
 function BookModel(connection, DataTypes) {
   const ERROR_MISSING_TITLE = "Missing required field: 'title' 👎";
+  const ERROR_UNIQUE_ISBN = "The 'ISBN' field must be unique 👎";
   const ERROR_ISBN_LENGTH =
     "ISBN must be more than or equal to 10 characters, but less than or equal to 13 characters 👎";
 
@@ -20,6 +21,10 @@ function BookModel(connection, DataTypes) {
     },
     ISBN: {
       type: DataTypes.STRING,
+      unique: {
+        args: true,
+        msg: ERROR_UNIQUE_ISBN
+      },
       validate: {
         len: {
           args: [10, 13],

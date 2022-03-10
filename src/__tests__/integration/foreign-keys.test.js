@@ -19,12 +19,10 @@ describe("/books", function () {
   });
 
   beforeEach(async function () {
-    await Promise.all([
-      Reader.destroy({ where: {} }),
-      Author.destroy({ where: {} }),
-      Genre.destroy({ where: {} }),
-      Book.destroy({ where: {} })
-    ]);
+    await Reader.destroy({ where: {} });
+    await Author.destroy({ where: {} });
+    await Genre.destroy({ where: {} });
+    await Book.destroy({ where: {} });
   });
 
   describe("association tests", function () {
@@ -55,13 +53,15 @@ describe("/books", function () {
       books = await Promise.all([
         Book.create(
           fakeData.dummyBook({
+            ISBN: "1234567890",
             ReaderId: readers[0].id,
-            AuthorId: authors[2].id,
+            AuthorId: authors[0].id,
             GenreId: genres[0].id
           })
         ),
         Book.create(
           fakeData.dummyBook({
+            ISBN: "12345678901",
             ReaderId: readers[1].id,
             AuthorId: authors[0].id,
             GenreId: genres[1].id
@@ -69,7 +69,8 @@ describe("/books", function () {
         ),
         Book.create(
           fakeData.dummyBook({
-            ReaderId: readers[1].id,
+            ISBN: "12345678902",
+            ReaderId: readers[2].id,
             AuthorId: authors[1].id,
             GenreId: genres[2].id
           })
@@ -91,6 +92,40 @@ describe("/books", function () {
           expect(book.AuthorId).to.equal(expected.AuthorId);
           expect(book.GenreId).to.equal(expected.GenreId);
         });
+      });
+    });
+
+    describe("GET /books/:id", function () {
+      it("returns a single book with the a Genre property", async function () {
+        const [book] = books;
+        const res = await req.get(`/books/${book.id}`);
+
+        expect(res.status).to.equal(200);
+        expect(res.body).to.have.property("Genre");
+      });
+    });
+
+    describe("DELETE /books/:id", function () {
+      it("removes the book from GET /genres", async function () {
+        const [book] = books;
+
+        let res = await req.get(`/books/${book.id}`);
+
+        const bookGenreId = res.body.GenreId;
+
+        res = await req.get("/genres");
+
+        const GenreIdBooksLength = res.body.find(
+          (genre) => genre.id === bookGenreId
+        ).Books.length;
+
+        res = await req.delete(`/books/${book.id}`);
+
+        res = await req.get(`/genres`);
+
+        expect(
+          res.body.find((genre) => genre.id === bookGenreId).Books.length
+        ).to.equal(GenreIdBooksLength - 1);
       });
     });
   });

@@ -25,22 +25,35 @@ function setUpTables() {
     onUpdate: "CASCADE"
   });
 
-  Author.hasMany(Book, {
-    onDelete: "SET NULL",
-    onUpdate: "CASCADE"
-  });
-
   Genre.hasMany(Book, {
     onDelete: "SET NULL",
     onUpdate: "CASCADE"
   });
 
-  Book.belongsTo(Author, {
+  Book.belongsTo(Genre, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE"
   });
 
-  Book.belongsTo(Genre, {
+  Author.hasMany(Book, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    foreignKey: {
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: "Missing required field: 'AuthorId' 👎"
+        },
+        notEmpty: {
+          args: true,
+          msg: "Missing required field: 'AuthorId' 👎"
+        }
+      }
+    }
+  });
+
+  Book.belongsTo(Author, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE"
   });
