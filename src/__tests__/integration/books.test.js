@@ -108,7 +108,7 @@ describe("books.controller", function () {
         expect(res.body.length).to.equal(3);
 
         res.body.forEach((book) => {
-          const expected = books.find((a) => a.id === book.id);
+          const expected = books.find((b) => b.id === book.id);
 
           expect(book.title).to.equal(expected.title);
           expect(book.ISBN).to.equal(expected.ISBN);

@@ -148,7 +148,7 @@ describe("readers.controller", function () {
         expect(res.body.length).to.equal(3);
 
         res.body.forEach((reader) => {
-          const expected = readers.find((a) => a.id === reader.id);
+          const expected = readers.find((r) => r.id === reader.id);
 
           expect(reader.name).to.equal(expected.name);
           expect(reader.email).to.equal(expected.email);

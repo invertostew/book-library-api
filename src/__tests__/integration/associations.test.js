@@ -106,6 +106,30 @@ describe("/books", function () {
     });
 
     describe("DELETE /books/:id", function () {
+      it("removes the book from GET /authors", async function () {
+        const [book] = books;
+
+        let res = await req.get(`/books/${book.id}`);
+
+        const bookAuthorId = res.body.AuthorId;
+
+        res = await req.get("/authors");
+
+        const AuthorIdBooksLength = res.body.find(
+          (author) => author.id === bookAuthorId
+        ).Books.length;
+
+        res = await req.delete(`/books/${book.id}`);
+
+        res = await req.get(`/authors`);
+
+        expect(
+          res.body.find((author) => author.id === bookAuthorId).Books.length
+        ).to.equal(AuthorIdBooksLength - 1);
+      });
+    });
+
+    describe("DELETE /books/:id", function () {
       it("removes the book from GET /genres", async function () {
         const [book] = books;
 
