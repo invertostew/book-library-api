@@ -14,6 +14,7 @@ This is my Book Library API project for [Manchester Codes](https://www.mancheste
   * [Genres](#genres)
   * [Books](#books)
 * [Testing](#testing)
+* [Future Plans](#future-plans)
 
 ## Description
 
@@ -184,13 +185,13 @@ The main purpose of this project is to:
 
 ### Books
 
-| HTTP Verb | Route      | Required Fields | Optional Fields                           |
-| --------- | ---------- | --------------- | ----------------------------------------- |
-| GET       | /books     |                 |                                           |
-| POST      | /books     | `title`         | `ISBN`, `ReaderId`, `AuthorId`, `GenreId` |
-| GET       | /books/:id |                 |                                           |
-| PATCH     | /books/:id |                 |                                           |
-| DELETE    | /books/:id |                 |                                           |
+| HTTP Verb | Route      | Required Fields     | Optional Fields               |
+| --------- | ---------- | ------------------- | ----------------------------- |
+| GET       | /books     |                     |                               |
+| POST      | /books     | `title`, `AuthorId` | `ISBN`, `ReaderId`, `GenreId` |
+| GET       | /books/:id |                     |                               |
+| PATCH     | /books/:id |                     |                               |
+| DELETE    | /books/:id |                     |                               |
 
 #### Example Request Body
 
@@ -217,10 +218,11 @@ The main purpose of this project is to:
   * must be provided
 * `ISBN` (optional)
   * must be between 10 and 13 characters to match ISBN-10 or ISBN-13
+  * must be unique
 * `ReaderId` (optional)
   * must be a valid `ReaderId` if provided
-* `AuthorId` (optional)
-  * must be a valid `AuthorId` if provided
+* `AuthorId` (required)
+  * must be a valid `AuthorId`
 * `GenreId` (optional)
   * must be a valid `GenreId` if provided
 
@@ -236,3 +238,7 @@ I also used [Insomnia](https://insomnia.rest/) to send requests to my RESTful AP
 
 ![Insomnia API Testing](./src/__tests__/__screenshots__/endpoint-testing.png)
 ![Passing Tests](./src/__tests__/__screenshots__/passing-tests.png)
+
+## Future Plans
+
+* I would like to condense down the CRUD tests in the future to use the CRUD helper functions where possible to make tests more DRY.
