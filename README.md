@@ -105,7 +105,7 @@ The main purpose of this project is to:
     "password": "VerySecurePassword"
 }
 
-// Endpoint: POST /readers/1
+// Endpoint: PATCH /readers/1
 {
     "name": "First Last Updated!"
 }
@@ -141,7 +141,7 @@ The main purpose of this project is to:
     "author": "First Last"
 }
 
-// Endpoint: POST /authors/1
+// Endpoint: PATCH /authors/1
 {
     "author": "First Last Updated!"
 }
@@ -171,7 +171,7 @@ The main purpose of this project is to:
     "genre": "Sci-Fy"
 }
 
-// Endpoint: POST /genres/1
+// Endpoint: PATCH /genres/1
 {
     "genre": "Sci-Fi"
 }
@@ -195,7 +195,7 @@ The main purpose of this project is to:
 
 #### Example Request Body
 
-```json
+```javascript
 // Endpoint: POST /books
 {
     "title": "Book Title",
@@ -205,7 +205,7 @@ The main purpose of this project is to:
     "GenreId": 1
 }
 
-// Endpoint: POST /books/1
+// Endpoint: PATCH /books/1
 {
     "title": "New Book Title",
     "ISBN": 1234567890123
