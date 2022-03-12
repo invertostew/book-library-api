@@ -16,7 +16,7 @@ This is my Book Library API project for [Manchester Codes](https://www.mancheste
 * [Testing](#testing)
 * [Future Plans](#future-plans)
 
-## Description
+## Description [Back to Top](#navigation)
 
 The main purpose of this project is to:
 
@@ -25,7 +25,7 @@ The main purpose of this project is to:
 * Learn how to use Sequelize to perform SQL queries.
 * Get real world practice with documentation by figuring out how to implement validation on models.
 
-## Features
+## Features [Back to Top](#navigation)
 
 * Create, read, update and delete readers, authors, genres and books.
 * Associate books with their authors.
@@ -33,7 +33,7 @@ The main purpose of this project is to:
 * Search for books based on author, or genre.
 * The readers password is never returned to the users of the API.
 
-## Requirements
+## Requirements [Back to Top](#navigation)
 
 * [Node JS](https://nodejs.org/en/) - JavaScript runtime environment
 
@@ -55,7 +55,7 @@ The main purpose of this project is to:
 * [ES Lint](https://eslint.org/) - to analyze the code for style guide problems
 * [Prettier](https://prettier.io/) - to format code and keep styling consistent
 
-## Getting Started
+## Getting Started [Back to Top](#navigation)
 
 * Pull down a MySQL image from DockerHub
   * `docker pull bbatm9/music_library_mysql`
@@ -83,9 +83,9 @@ The main purpose of this project is to:
 * To start the development server:
   * `npm run start:dev`
 
-## Documentation
+## Documentation [Back to Top](#navigation)
 
-### Readers
+### Readers [Back to Top](#navigation)
 
 | HTTP Verb | Route        | Required Fields             |
 | --------- | ------------ | --------------------------- |
@@ -123,7 +123,7 @@ The main purpose of this project is to:
   * must be more than 8 characters
   * must be less than 64 characters
 
-### Authors
+### Authors [Back to Top](#navigation)
 
 | HTTP Verb | Route        | Required Fields |
 | --------- | ------------ | --------------- |
@@ -153,7 +153,7 @@ The main purpose of this project is to:
   * must be provided
   * must be unique
 
-### Genres
+### Genres [Back to Top](#navigation)
 
 | HTTP Verb | Route       | Required Fields |
 | --------- | ----------- | --------------- |
@@ -183,7 +183,7 @@ The main purpose of this project is to:
   * must be provided
   * must be unique
 
-### Books
+### Books [Back to Top](#navigation)
 
 | HTTP Verb | Route      | Required Fields     | Optional Fields               |
 | --------- | ---------- | ------------------- | ----------------------------- |
@@ -226,7 +226,7 @@ The main purpose of this project is to:
 * `GenreId` (optional)
   * must be a valid `GenreId` if provided
 
-## Testing
+## Testing [Back to Top](#navigation)
 
 Built using a TDD approach. Tests have been split out into unit tests and integration tests. Where possible tests where written as failing tests first, and then built out as per the tests, and later refactored and tested again. At some points it was necessary to spike, in which case I would delete the code, write the test and then re-implement the code.
 
@@ -239,6 +239,6 @@ I also used [Insomnia](https://insomnia.rest/) to send requests to my RESTful AP
 ![Insomnia API Testing](./src/__tests__/__screenshots__/endpoint-testing.png)
 ![Passing Tests](./src/__tests__/__screenshots__/passing-tests.png)
 
-## Future Plans
+## Future Plans [Back to Top](#navigation)
 
 * I would like to condense down the CRUD tests in the future to use the CRUD helper functions where possible to make tests more DRY.
