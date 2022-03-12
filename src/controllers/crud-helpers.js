@@ -46,12 +46,16 @@ async function createNewItem(model, body, res, next) {
   }
 }
 
-async function readSingleItemById(model, id, res, next, includedModel) {
+async function readSingleItemById(model, id, res, next, ...includedModel) {
   const Model = getModel(model);
+
+  const associations = includedModel.map((model) => {
+    return getModel(model);
+  });
 
   try {
     const item = includedModel
-      ? await Model.findByPk(id, { include: getModel(includedModel) })
+      ? await Model.findByPk(id, { include: associations })
       : await Model.findByPk(id);
 
     if (!item) {
